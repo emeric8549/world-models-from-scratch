@@ -74,8 +74,27 @@ class BallEnvironment(BaseEnvironment):
     def step(self) -> np.ndarray:
         self._current_step += 1
 
-        self._x += self._vx * self.dt
-        self._y += self._vy * self.dt
+        new_x = self._x + self._vx * self.dt
+        new_y = self._y + self._vy * self.dt
+
+        if new_x < self.radius:
+            new_x = 2 * self.radius - self._x - self._vx * self.dt
+            self._vx = -self._vx
+
+        elif new_x > self.width - 1 - self.radius:
+            new_x = 2 * (self.width - 1 - self.radius) - self._x - self._vx * self.dt
+            self._vx = -self._vx
+
+        if new_y < self.radius:
+            new_y = 2 * self.radius - self._y - self._vy * self.dt
+            self._vy = -self._vy
+
+        elif new_y > self.height - 1 - self.radius:
+            new_y = 2 * (self.height - 1 - self.radius) - self._y - self._vy * self.dt
+            self._vy = -self._vy
+
+        self._x = new_x
+        self._y = new_y
 
         self.current_observation = self.get_observation()
 
