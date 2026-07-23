@@ -1,4 +1,4 @@
-from base_environment import BaseEnvironment
+from .base_environment import BaseEnvironment
 import numpy as np
 import matplotlib.pyplot as plt
 
