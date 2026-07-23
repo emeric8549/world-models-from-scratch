@@ -1,4 +1,4 @@
-from transition import Transition
+from .transition import Transition
 from typing import Iterator
 
 class Trajectory:
