@@ -103,16 +103,8 @@ class BallEnvironment(BaseEnvironment):
     def render(self):
         pass
 
-    def get_state(self):
-        pass
+    def get_state(self) -> np.ndarray:
+        return np.array([self._x, self._y, self._vx, self._vy])
 
     def episode_done(self) -> bool:
         return self._current_step >= self.max_steps
-
-
-env = BallEnvironment(width=10, height=10, radius=1, dt=1, max_speed=5, max_steps=1000)
-print(env.get_observation())
-print(env._x, env._y, env._vx, env._vy)
-for _ in range(10):
-    env.step()
-    print(env.get_observation())
