@@ -106,5 +106,13 @@ class BallEnvironment(BaseEnvironment):
     def get_state(self):
         pass
 
-    def episode_done(self):
-        pass
+    def episode_done(self) -> bool:
+        return self._current_step >= self.max_steps
+
+
+env = BallEnvironment(width=10, height=10, radius=1, dt=1, max_speed=5, max_steps=1000)
+print(env.get_observation())
+print(env._x, env._y, env._vx, env._vy)
+for _ in range(10):
+    env.step()
+    print(env.get_observation())
