@@ -67,8 +67,15 @@ class BallEnvironment(BaseEnvironment):
 
         return current_observation
     
-    def step(self):
-        pass
+    def step(self) -> np.ndarray:
+        self._current_step += 1
+
+        self._x += self._vx * self.dt
+        self._y += self._vy * self.dt
+
+        self.current_observation = self.get_observation()
+
+        return self.current_observation
 
     def render(self):
         pass
