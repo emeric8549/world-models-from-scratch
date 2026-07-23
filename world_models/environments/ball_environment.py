@@ -49,9 +49,9 @@ class BallEnvironment(BaseEnvironment):
             max_speed_y = min(self.max_speed, (self.height - 1 - self.radius * 2) / self.dt)
             
             while self._vx == 0:
-                self._vx = np.random.randint(-max_speed_x, max_speed_x + 1)
+                self._vx = np.random.uniform(-max_speed_x, max_speed_x + 1)
             while self._vy == 0:
-                self._vy = np.random.randint(-max_speed_y, max_speed_y + 1)
+                self._vy = np.random.uniform(-max_speed_y, max_speed_y + 1)
 
         self._current_step = 0
         self.current_observation = self.get_observation()
