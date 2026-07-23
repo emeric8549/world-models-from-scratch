@@ -30,11 +30,42 @@ class BallEnvironment(BaseEnvironment):
         self._vy = 0
         self._current_step = 0
 
-    def reset(self):
-        pass
+        self.current_observation = self.reset(True)
 
-    def get_observation(self):
-        pass
+    def reset(self, randomize: bool = False) -> np.ndarray:
+        if not randomize:
+            self._x = self.width // 2
+            self._y = self.height // 2
+            self._vx = 1
+            self._vy = 1
+
+        else:
+            self._x = np.random.randint(self.radius, self.width - self.radius)
+            self._y = np.random.randint(self.radius, self.height - self.radius)
+            self._vx = 0
+            self._vy = 0
+            while self._vx == 0:
+                max_speed_x = min(self.max_speed, (self.width - self.radius * 2) // self.dt)
+                self._vx = np.random.randint(-max_speed_x, max_speed_x + 1)
+            while self._vy == 0:
+                max_speed_y = min(self.max_speed, (self.height - self.radius * 2) // self.dt)
+                self._vy = np.random.randint(-max_speed_y, max_speed_y + 1)
+
+        self._current_step = 0
+        self.current_observation = self.get_observation()
+
+        return self.current_observation
+
+    def get_observation(self) -> np.ndarray:
+        current_observation = np.zeros((self.height, self.width))
+        x, y = int(self._x), int(self._y)
+        current_observation[y, x] = 1
+        for i in range(y - self.radius, y + self.radius + 1):
+            for j in range(x - self.radius, x + self.radius + 1):
+                if (i - y) ** 2 + (j - x) ** 2 <= self.radius ** 2:
+                    current_observation[i, j] = 1
+
+        return current_observation
     
     def step(self):
         pass
