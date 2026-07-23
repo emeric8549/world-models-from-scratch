@@ -1,5 +1,6 @@
 from base_environment import BaseEnvironment
 import numpy as np
+import matplotlib.pyplot as plt
 
 class BallEnvironment(BaseEnvironment):
     def __init__(self, width: int, height: int, radius: int = 1, dt: float = 1, max_speed: int = 5, max_steps: int = 1000):
@@ -100,8 +101,11 @@ class BallEnvironment(BaseEnvironment):
 
         return self.current_observation
 
-    def render(self):
-        pass
+    def render(self) -> None:
+        plt.imshow(self.current_observation, cmap="gray")
+        plt.axis("off")
+        plt.pause(0.1)
+        plt.clf()
 
     def get_state(self) -> np.ndarray:
         return np.array([self._x, self._y, self._vx, self._vy])
