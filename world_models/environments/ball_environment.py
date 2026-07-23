@@ -60,10 +60,12 @@ class BallEnvironment(BaseEnvironment):
 
     def get_observation(self) -> np.ndarray:
         current_observation = np.zeros((self.height, self.width))
-        x, y = int(self._x), int(self._y)
-        current_observation[y, x] = 1
-        for i in range(y - self.radius, y + self.radius + 1):
-            for j in range(x - self.radius, x + self.radius + 1):
+
+        x = round(self._x)
+        y = round(self._y)
+
+        for i in range(max(0, y - self.radius), min(self.height, y + self.radius + 1)):
+            for j in range(max(0, x - self.radius), min(self.width, x + self.radius + 1)):
                 if (i - y) ** 2 + (j - x) ** 2 <= self.radius ** 2:
                     current_observation[i, j] = 1
 
