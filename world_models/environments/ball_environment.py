@@ -44,11 +44,13 @@ class BallEnvironment(BaseEnvironment):
             self._y = np.random.randint(self.radius, self.height - self.radius)
             self._vx = 0
             self._vy = 0
+
+            max_speed_x = min(self.max_speed, (self.width - 1 - self.radius * 2) / self.dt)
+            max_speed_y = min(self.max_speed, (self.height - 1 - self.radius * 2) / self.dt)
+            
             while self._vx == 0:
-                max_speed_x = min(self.max_speed, (self.width - self.radius * 2) // self.dt)
                 self._vx = np.random.randint(-max_speed_x, max_speed_x + 1)
             while self._vy == 0:
-                max_speed_y = min(self.max_speed, (self.height - self.radius * 2) // self.dt)
                 self._vy = np.random.randint(-max_speed_y, max_speed_y + 1)
 
         self._current_step = 0
