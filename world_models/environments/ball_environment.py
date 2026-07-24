@@ -107,8 +107,8 @@ class BallEnvironment(BaseEnvironment):
         plt.pause(0.1)
         plt.clf()
 
-    def get_state(self) -> np.ndarray:
-        return np.array([self._x, self._y, self._vx, self._vy])
+    def get_state(self) -> dict:
+        return {"x": self._x, "y": self._y, "vx": self._vx, "vy": self._vy}
 
     def episode_done(self) -> bool:
         return self._current_step >= self.max_steps
