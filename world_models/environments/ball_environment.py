@@ -75,27 +75,28 @@ class BallEnvironment(BaseEnvironment):
     def step(self) -> np.ndarray:
         self._current_step += 1
 
-        new_x = self._x + self._vx * self.dt
-        new_y = self._y + self._vy * self.dt
+        min_x, max_x = self.radius, self.width - 1 - self.radius
+        min_y, max_y = self.radius, self.height - 1 - self.radius
+        Lx, Ly = max_x - min_x, max_y - min_y
 
-        if new_x < self.radius:
-            new_x = 2 * self.radius - self._x - self._vx * self.dt
-            self._vx = -self._vx
+        px, py = self._x - min_x, self._y - min_y
+        if self._vx < 0:
+            px = 2 * Lx - px
 
-        elif new_x > self.width - 1 - self.radius:
-            new_x = 2 * (self.width - 1 - self.radius) - self._x - self._vx * self.dt
-            self._vx = -self._vx
+        if self._vy < 0:
+            py = 2 * Ly - py
 
-        if new_y < self.radius:
-            new_y = 2 * self.radius - self._y - self._vy * self.dt
-            self._vy = -self._vy
+        new_px = (px + abs(self._vx) * self.dt) % (2 * Lx)
+        new_py = (py + abs(self._vy) * self.dt) % (2 * Ly)
 
-        elif new_y > self.height - 1 - self.radius:
-            new_y = 2 * (self.height - 1 - self.radius) - self._y - self._vy * self.dt
-            self._vy = -self._vy
+        self._x = max_x - (new_px - Lx) if new_px > Lx else new_px + min_x
+        self._y = max_y - (new_py - Ly) if new_py > Ly else new_py + min_y
 
-        self._x = new_x
-        self._y = new_y
+        final_direction_x = 1 if new_px < Lx else -1
+        final_direction_y = 1 if new_py < Ly else -1
+
+        self._vx = final_direction_x * abs(self._vx)
+        self._vy = final_direction_y* abs(self._vy)
 
         self.current_observation = self.get_observation()
 
